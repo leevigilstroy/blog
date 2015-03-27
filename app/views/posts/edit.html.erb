@@ -1,0 +1,10 @@
+<% provide(:title, "Edit Post") %>
+<div>
+  <h1>Post Details:</h1>
+</div>
+
+<div>
+  <p><%= render 'postform', url: post_path(@post), method: :patch%></p>
+  
+  <p><%= link_to 'Back', :back %></p>
+</div>

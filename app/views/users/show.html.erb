@@ -1,0 +1,14 @@
+<% provide(:title, "User") %>
+
+<div>
+  <h1> User Details for <%=@user.name%></h1>
+</div>
+
+<div>
+  <p>Your name is: <%=@user.name%></p>
+  <p>Your email address is : <%=@user.email%></p>
+  
+  <p><%= link_to 'Back', :back %></p>
+</div>
+
+
