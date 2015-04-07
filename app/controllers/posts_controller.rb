@@ -28,18 +28,20 @@ class PostsController < ApplicationController
   end
   
   def update
-     @post = Post.find(params([:id]))
+     @post = Post.find(params[:id])
     if @post.save
       redirect_to(:action => 'show', :id => @post.id)
+    else
+      render 'posts/new'
     end
   end
   
   def delete
-    @post = Post.find(params([:id]))
+    @post = Post.find(params[:id])
   end
   
   def destroy
-    @post = Post.find(params([:id]))
+    @post = Post.find(params[:id])
     @post.destroy
     redirect_to root_path
   end
