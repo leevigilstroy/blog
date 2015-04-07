@@ -1,14 +1,7 @@
 require 'test_helper'
 
 class PostsControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
 
-  #  test "test root path" do
-#    get :root
-#    assert_template 'posts/index'
-#  end
   
   def setup
     @post = posts(:one)

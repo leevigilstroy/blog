@@ -33,7 +33,7 @@ class UsersControllerTest < ActionController::TestCase
     patch  :update, id: @user, user: {name: "change title",  email: "changecontent"}
     assert_redirected_to root_path
     assert_equal 'Details Updated', flash[:success]
-    assert_template 'users/index'
+    assert_template 'static_pages/home'
     
   end
 
