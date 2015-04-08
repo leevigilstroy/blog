@@ -1,11 +1,12 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 
-one: 
+Oliver: 
   id:  1
-  name:  Oliver
-  email:  emailtest
+  name:  Oliver FS
+  email:  emailtest@email.com
   admin:  true
+  
   
 
 
