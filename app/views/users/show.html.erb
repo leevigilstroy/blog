@@ -1,12 +1,16 @@
-<% provide(:title, "User") %>
+<% provide(:title, @user.name) %>
 
-<div>
-  <h1> User Details for <%=@user.name%></h1>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <h1><%= gravatar_for @user %> <%=@user.name%></h1>
+    </section>
+  </aside>
 </div>
 
 <div>
-  <p>Your name is: <%=@user.name%></p>
-  <p>Your email address is : <%=@user.email%></p>
+  <p>Name: <%=@user.name%>
+    Email: <%=@user.email%></p>
   
   <p><%= link_to 'Back', :back %></p>
 </div>

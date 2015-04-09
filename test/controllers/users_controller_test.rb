@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersControllerTest < ActionController::TestCase
 
   def setup
-    @user = users(:one)
+    @user =  User.new(id: 1, name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons")
   end
   
   test "User index page loads" do
@@ -22,15 +22,15 @@ class UsersControllerTest < ActionController::TestCase
   
   test "Save new user" do
     assert_difference('User.count', 1) do
-      post :create, user: {name: "abcdt", email: "email@email.com"}
-     assert_redirected_to user_path(assigns(:user))
-    end
-    assert_not_nil assigns(:user)
-    assert_template 'users/show'
+      post :create, user: {name: @user.name, email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation}
+      end
+   assert_redirected_to user_path(assigns(:user))
+      assert_equal 'New User Created', flash[:success]
+    #assert_template 'users/show'
   end
   
   test "Update a user" do
-    patch  :update, id: @user, user: {name: "change title",  email: "changecontent"}
+    patch  :update, id: @user.id, user: {name: "change title",  email: "changecontent@email.com", password: @user.password, password_confirmation: @user.password_confirmation}
     assert_redirected_to root_path
     assert_equal 'Details Updated', flash[:success]
     assert_template 'static_pages/home'
