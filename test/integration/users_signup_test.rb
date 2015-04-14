@@ -21,6 +21,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       get signup_path
       post users_path, user: {name: "", email: "", password: @user.password, password_confirmation: "1234564567"}
     end
+    assert_template 'users/new'
   end
   
 end

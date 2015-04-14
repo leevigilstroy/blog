@@ -18,16 +18,15 @@ class PostsControllerTest < ActionController::TestCase
     get(:show , {id: 1})
     assert_response :success
     assert_not_nil assigns(:post)
-   
+    assert_template :show
   end
   
   test "Save new post" do
     assert_difference('Post.count', 1) do
       post :create, post: {title: "test title", content: "Ipsofactum hoopity hoop"}
      end
-      assert_redirected_to post_path(assigns(:post))
-      #assert_template 'posts/show'
-      assert_not_nil assigns(:post)
+    assert_redirected_to post_path(assigns(:post))
+    assert_not_nil assigns(:post)
   end
   
   test "Update a post" do

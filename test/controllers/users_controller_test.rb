@@ -25,16 +25,14 @@ class UsersControllerTest < ActionController::TestCase
       post :create, user: {name: @user.name, email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation}
       end
    assert_redirected_to user_path(assigns(:user))
-      assert_equal 'New User Created', flash[:success]
-    #assert_template 'users/show'
+   assert_equal 'New User Created', flash[:success]
+   
   end
   
   test "Update a user" do
     patch  :update, id: @user.id, user: {name: "change title",  email: "changecontent@email.com", password: @user.password, password_confirmation: @user.password_confirmation}
     assert_redirected_to root_path
-    assert_equal 'Details Updated', flash[:success]
-    assert_template 'static_pages/home'
-    
+    assert_equal 'Details Updated', flash[:success]    
   end
 
   test "delete user" do
