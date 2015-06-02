@@ -25,7 +25,7 @@ class UsersControllerTest < ActionController::TestCase
       post :create, user: {name: @user.name, email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation}
       end
    assert_redirected_to user_path(assigns(:user))
-   assert_equal 'New User Created', flash[:success]
+   assert_equal 'Welcome to my sample app!', flash[:success]
    
   end
   

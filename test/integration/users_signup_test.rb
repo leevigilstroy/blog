@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersSignupTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user =  User.new(name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons")
+    @user =  User.new(name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons", id: 1)
   end
   
   
@@ -12,8 +12,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       get signup_path
       post_via_redirect users_path, user: {name: @user.name, email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation}
     end
-    assert_equal 'New User Created', flash[:success]
+    assert_equal 'Welcome to my sample app!', flash[:success]
     assert_template 'users/show'
+    assert is_logged_in?
   end
   
   test "unsuccessful User Sign up" do

@@ -3,9 +3,11 @@
 
 Oliver: 
   id:  1
-  name:  Oliver FS
+  name:  Oliver 
   email:  emailtest@email.com
+  password_digest: <%= User.digest('password') %>
   admin:  true
+  
   
   
 
