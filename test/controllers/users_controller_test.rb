@@ -32,7 +32,7 @@ class UsersControllerTest < ActionController::TestCase
   test "Update a user" do
     patch  :update, id: @user.id, user: {name: "change title",  email: "changecontent@email.com", password: @user.password, password_confirmation: @user.password_confirmation}
     assert_redirected_to root_path
-    assert_equal 'Details Updated', flash[:success]    
+    assert_equal 'Profile Updated', flash[:success]    
   end
 
   test "delete user" do

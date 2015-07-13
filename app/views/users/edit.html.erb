@@ -6,5 +6,10 @@
 <div>
   <p><%= render 'userform', url: user_path(@user), method: :patch%></p>
   
+  <div class="gravatar_edit">
+    <%= gravatar_for @user %>
+    <a href="http://gravatar.com/emails" target="_blank">change</a>
+  </div>
+  
   <p><%= link_to 'Back', :back %></p>
 </div>
