@@ -22,19 +22,17 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_template 'users/edit'
     name  = "Foo Bar"
     email = "foo@bar.com"
-    patch_via_redirect user_path(@user), user: {
+    patch user_path(@user), user: {
       name: name,
       email: email,
       password: "",
       password_confirmation: ""}
-    
-    assert_equal("Foo Bar",@user.name)
     assert_not flash.empty?
-    assert_redirected_to @user
-    
+    assert_redirected_to root_path
+    #test user details updated
     @user.reload
     assert_equal email, @user.email
-    assert_equal name, @user.email
+    assert_equal name, @user.name
   end
       
 end

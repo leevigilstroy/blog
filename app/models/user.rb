@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   has_secure_password 
   validates :password, presence: true, length: {minimum: 6}, allow_nil: true
-  validates :password_confirmation, presence: true, allow_nil: true
+ # validates :password_confirmation, presence: true, 
   
   # Password generation: Returns the hash digest of the given strin
   def User.digest(string)
