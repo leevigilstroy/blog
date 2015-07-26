@@ -25,6 +25,12 @@ module SessionsHelper
     end
   end
   
+  #boolean check on current user
+  def current_user?(user)
+    user == current_user
+  end
+  
+  
   # Forgets a persistent session.
   def forget(user)
     user.forget
@@ -41,6 +47,17 @@ module SessionsHelper
   
   def logged_in?
     !current_user.nil?
+  end
+  
+  # Redirects to stored location (or to the default).  To implement the forwarding friednly itself, we use the redirect_back_or method to redirect to the requested URL if it exists, or some default URL otherwise
+  def redirect_back_or(default)
+    redirect_to(session[:forwarding_url] || default)
+    session.delete(:forwarding_url)
+  end
+
+  # Stores the URL trying to be accessed.  The store_location method in Listing 9.27 puts the requested URL in the session variable under the key :forwarding_url, but only for a GET request
+  def store_location
+    session[:forwarding_url] = request.url if request.get?
   end
   
 end

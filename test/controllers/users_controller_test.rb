@@ -4,6 +4,33 @@ class UsersControllerTest < ActionController::TestCase
 
   def setup
     @user =  User.new(id: 1, name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons")
+    @other_user = users(:archer)
+  end
+  
+  test "should redirect edit when logged in as wrong user" do
+    log_in_as(@other_user)
+    get :edit, id: @user
+    assert_redirected_to root_url
+    assert flash.empty?
+end
+
+  test "should redirect update when logged in as wrong user" do
+    log_in_as(@other_user)
+    patch :update, id: @user, user: {name: @user.name, email: @user.email}
+    assert_redirected_to root_url
+    assert flash.empty?    
+  end
+  
+  test "Should redirect edit when not logged in" do
+    get :edit, id: @user
+    assert_redirected_to login_url
+    assert_not flash.empty?
+  end
+  
+  test "Should redirect update when not logged in" do
+    patch  :update, id: @user, user: {name: @user.name, email: @user.email}
+    assert_redirected_to login_url
+    assert_not flash.empty?
   end
   
   test "User index page loads" do
@@ -30,7 +57,8 @@ class UsersControllerTest < ActionController::TestCase
   end
   
   test "Update a user" do
-    patch  :update, id: @user.id, user: {name: "change title",  email: "changecontent@email.com", password: @user.password, password_confirmation: @user.password_confirmation}
+    log_in_as(@user)
+    patch  :update, id: @user, user: {name: "change title",  email: "changecontent@email.com", password: @user.password, password_confirmation: @user.password_confirmation}
     assert_redirected_to root_path
     assert_equal 'Profile Updated', flash[:success]    
   end
