@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersControllerTest < ActionController::TestCase
 
   def setup
-    @user =  User.new(id: 1, name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons")
+    @user =  User.new(id: 1, name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons", admin: true)
     @other_user = users(:archer)
   end
   
@@ -69,13 +69,31 @@ end
     assert_redirected_to root_path
     assert_equal 'Profile Updated', flash[:success]    
   end
-
-  test "delete user" do
-    assert_difference('User.count', -1) do
-      delete :destroy, id: @user.id
-     end
-    assert_redirected_to root_path
+  
+  test "cannot update a user admin status" do
+    patch :update, id:@user.id, user: {admin: false}
+    assert @user.admin? 
+    
+    log_in_as(@other_user)
+    patch :update, id: @other_user, user: {admin: true}
+    assert_not @other_user.admin? 
   end
   
+
+  
+  test "should redirect destroy request when not logged in" do
+     assert_no_difference('User.count') do
+       delete :destroy, id: @user
+     end
+     assert_redirected_to login_url
+   end
+  
+  test "should redirect destroy request when logged in as a non-admin" do
+    log_in_as(@other_user)
+    assert_no_difference('User.count') do
+      delete :destroy, id: @user.id
+    end
+    assert_redirected_to users_path
+  end
   
 end

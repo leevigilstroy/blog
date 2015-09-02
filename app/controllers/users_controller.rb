@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
 
-  before_action :logged_in_user, only: [:edit, :update, :index]
+  before_action :logged_in_user, only: [:edit, :update, :index, :delete, :destroy]
   before_action :correct_user, only: [:edit, :update]
+  before_action :admin_user, only: [:delete, :destroy]
   
   def new
     @user = User.new
@@ -46,9 +47,9 @@ class UsersController < ApplicationController
   end
   
   def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-    redirect_to root_path
+    @user = User.find(params[:id]).destroy
+    redirect_to users_path
+    flash[:success] = "User Deleted"
   end
   
  
@@ -56,7 +57,7 @@ class UsersController < ApplicationController
   private
     
   def user_params
-    params.require(:user).permit(:admin, :name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
   
   #before filters
@@ -75,6 +76,9 @@ class UsersController < ApplicationController
     redirect_to root_url unless current_user?(@user)
   end
   
+  def admin_user
+    redirect_to(users_path) unless current_user.admin?
+  end
     
   
 end

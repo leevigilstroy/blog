@@ -12,6 +12,7 @@ archer:
   name: Sterling Archer
   email: duchess@exanmple.gov
   password_digest: <%=User.digest('password') %>
+  admin: false
   
 <% 50.times do |n| %>
 user.<%= n %>:
