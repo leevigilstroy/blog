@@ -3,24 +3,51 @@ require 'test_helper'
 class UsersSignupTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user =  User.new(name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons", id: 1)
+    ActionMailer::Base.deliveries.clear
   end
   
   
-  test "Successful User Sign up" do
+  test "Successful User Sign up with account activation" do
     assert_difference('User.count',1) do
       get signup_path
-      post_via_redirect users_path, user: {name: @user.name, email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation}
+      post users_path, user: {name: "testname", email: "test@email.com", password: "password", password_confirmation: "password"}
+     assert_equal 'Please check your email to activate your account', flash[:info]
     end
-    assert_equal 'Welcome to my sample app!', flash[:success]
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    user = assigns(:user)
+    assert_not user.activated?
+    
+    #try to log in before account activation
+    log_in_as(user)
+    assert_redirected_to root_path
+    assert_equal 'Account not activated.  Check your email to activate your account', flash[:warning]
+    assert_not is_logged_in?
+    
+    #invalid activation token
+    get edit_account_activation_path("Invalidtoken")
+    assert_not is_logged_in?
+    assert_redirected_to root_path
+    assert_equal 'Invalid activation link', flash[:danger]
+    
+    #valid token wrong email
+    get edit_account_activation_path(user.activation_token, email: "wrong")
+    assert_not is_logged_in?
+    assert_redirected_to root_path
+    assert_equal 'Invalid activation link', flash[:danger]
+    
+     # Valid activation token
+    get edit_account_activation_path(user.activation_token, email: user.email)
+    assert_equal true, user.reload.activated?
+    follow_redirect!
     assert_template 'users/show'
     assert is_logged_in?
+      
   end
   
   test "unsuccessful User Sign up" do
     assert_difference('User.count',0) do
       get signup_path
-      post users_path, user: {name: "", email: "", password: @user.password, password_confirmation: "1234564567"}
+      post users_path, user: {name: "", email: "", password: "abccdefg", password_confirmation: "1234564567"}
     end
     assert_template 'users/new'
   end

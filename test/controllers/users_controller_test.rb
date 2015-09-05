@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersControllerTest < ActionController::TestCase
 
   def setup
-    @user =  User.new(id: 1, name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons", admin: true)
+    @user =  User.new(id: 1, name: "Oliver", email:"oliver@email.com", password: "Nelsons", password_confirmation: "Nelsons", admin: true, activated: true, activated_at: Time.zone.now)
     @other_user = users(:archer)
   end
   
@@ -58,8 +58,8 @@ end
     assert_difference('User.count', 1) do
       post :create, user: {name: @user.name, email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation}
       end
-   assert_redirected_to user_path(assigns(:user))
-   assert_equal 'Welcome to my sample app!', flash[:success]
+   assert_redirected_to root_path
+   assert_equal 'Please check your email to activate your account', flash[:info]
    
   end
   

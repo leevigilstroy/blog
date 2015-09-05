@@ -1,0 +1,6 @@
+
+<%= @greeting%><%= @user.name%>,
+
+Welcome to my sample rails app.  To activate your account, please click the following link:
+
+<%= edit_account_activation_url(@user.activation_token, email: @user.email) %>
