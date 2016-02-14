@@ -13,10 +13,15 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post users_path, user: {name: "testname", email: "test@email.com", password: "password", password_confirmation: "password"}
      assert_equal 'Please check your email to activate your account', flash[:info]
     end
+    # line below verifies that exactly one email was sent
     assert_equal 1, ActionMailer::Base.deliveries.size
+    #
+    
     user = assigns(:user)
     assert_not user.activated?
-    
+    assert_redirected_to root_path
+    assert_not is_logged_in?
+
     #try to log in before account activation
     log_in_as(user)
     assert_redirected_to root_path
@@ -50,6 +55,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post users_path, user: {name: "", email: "", password: "abccdefg", password_confirmation: "1234564567"}
     end
     assert_template 'users/new'
+    assert_select 'div#error_explanation'
+    assert_select 'div.field_with_errors'
   end
   
 end
